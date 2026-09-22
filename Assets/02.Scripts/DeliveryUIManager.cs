@@ -4,13 +4,13 @@ using UnityEngine.UI;
 
 public class DeliveryUIManager : MonoBehaviour
 {
-    [Header("UI 요소")]
-    [SerializeField] private Text statusText;
-    [SerializeField] private Text messageText;
-    [SerializeField] private Slider batterySlider;
-    [SerializeField] private Image batteryFill;
+    [Header("UI Elements")]
+    public Text statusText;
+    public Text messageText;
+    public Slider batterySlider;
+    public Image batteryFill;
 
-    [SerializeField] private DeliveryDriver driver;
+    public DeliveryDriver driver;
 
     private void Start()
     {

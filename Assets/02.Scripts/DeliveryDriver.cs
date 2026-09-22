@@ -5,13 +5,13 @@ using UnityEngine.InputSystem;
 public class DeliveryDriver : MonoBehaviour
 {
     [Header("배달원 설정")]
-    [SerializeField] private float moveSpeed = 8f;
-    [SerializeField] private float rotationSpeed = 10f;
+    public float moveSpeed = 8f;
+    public float rotationSpeed = 10f;
 
     [Header("상태")]
-    [SerializeField] private float currentMoney = 0;
-    [SerializeField] private float batteryLevel = 100f;
-    [SerializeField] private int deliveryCount = 0;
+    public float currentMoney = 0;
+    public float batteryLevel = 100f;
+    public int deliveryCount = 0;
 
     public DriverEvents driverEvents;
 
@@ -54,6 +54,7 @@ public class DeliveryDriver : MonoBehaviour
             {
                 StopMoving();
             }
+            return;
         }
 
         Vector3 moveDirection = Vector3.zero;
@@ -81,7 +82,7 @@ public class DeliveryDriver : MonoBehaviour
             Quaternion targetRoation = Quaternion.LookRotation(moveDirection);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRoation, rotationSpeed * Time.deltaTime);
 
-            ChangeBattery(-Time.deltaTime * 3f);
+            ChangeBattery(-Time.deltaTime * 10f);
         }
         else
         {
@@ -121,7 +122,7 @@ public class DeliveryDriver : MonoBehaviour
 
     public void ChargeBattery()
     {
-        ChangeBattery(batteryLevel - 100f);
+        ChangeBattery(100f - batteryLevel);
     }
 
     public string GetStatusText()
