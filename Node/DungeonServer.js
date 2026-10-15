@@ -29,7 +29,7 @@ function createRooms() {
         {
             index: 0,
             type: "MONSTER",
-            status: "ACTIVE",
+            state: "ACTIVE",
             monsterName: "슬라임",
             monsterHP: 30,
             monsterAttack: 5,
@@ -38,7 +38,7 @@ function createRooms() {
         {
             index: 1,
             type: "TREASURE",
-            status: "LOCKED",
+            state: "LOCKED",
             monsterName: "",
             monsterHP: 0,
             monsterAttack: 0,
@@ -47,7 +47,7 @@ function createRooms() {
         {
             index: 2,
             type: "HEAL",
-            status: "LOCKED",
+            state: "LOCKED",
             monsterName: "",
             monsterHP: 0,
             monsterAttack: 0,
@@ -56,7 +56,7 @@ function createRooms() {
         {
             index: 3,
             type: "MONSTER",
-            status: "ACTIVE",
+            state: "LOCKED",
             monsterName: "고블린",
             monsterHP: 40,
             monsterAttack: 8,
@@ -65,7 +65,7 @@ function createRooms() {
         {
             index: 4,
             type: "EXIT",
-            status: "LOCKED",
+            state: "LOCKED",
             monsterName: "",
             monsterHP: 0,
             monsterAttack: 0,
@@ -98,7 +98,7 @@ app.get("/api/game/state", (req, res) => {
 app.post("/api/dungeon/enter", (req, res) => {
     if (dungeonRun && dungeonRun.state == "IN_PROGRESS")
     {
-        return failure(res, 409, "RUN_ALREAY_ACTIVE", '이미 탐험중입니다.');
+        return failure(res, 409, "RUN_ALREADY_ACTIVE", '이미 탐험중입니다.');
     }
 
     player.hp = player.maxHP;
@@ -143,7 +143,7 @@ app.post("/api/dungeon/action", (req, res) => {
         return success(res, "ATTACK_RESOLVED", "서로 공격했습니다.", gameState());
     }
 
-    if (action === "OPEN_QUEST" && room.type === "TREASURE" && room.state === "ACTIVE")
+    if (action === "OPEN_CHEST" && room.type === "TREASURE" && room.state === "ACTIVE")
     {
         room.state = "CLEARED";
         dungeonRun.runGold += room.rewardGold;
@@ -159,13 +159,22 @@ app.post("/api/dungeon/action", (req, res) => {
 
     if (action === "NEXT_ROOM" && room.state === "CLEARED")
     {
-        if (dungeonRun.currentRoom >= dungeonRun.rooms.length - 1)
+        if (dungeonRun.currentRoomIndex >= dungeonRun.rooms.length - 1)
         {
             return failure(res, 409, "NO_NEXT_ROOM", "다음 방이 없습니다.");
         }
 
         dungeonRun.currentRoomIndex += 1;
         currentRoom().state = "ACTIVE";
+        return success(res, "DUNGEON_ADVANCED", "다음 방으로 이동했습니다.", gameState());
+    }
+
+    if (action === "RETURN" && room.type === "EXIT" && room.state === "ACTIVE")
+    {
+        player.gold += dungeonRun.runGold;
+        dungeonRun.runGold = 0;
+        dungeonRun.state = "RETURNED";
+
         return success(res, "DUNGEON_RETURNED", "탐험을 마치고 귀환했습니다.", gameState());
     }
 
