@@ -69,27 +69,20 @@ CREATE TABLE inventories(
 )
 
 INSERT INTO inventories(player_id, item_id, quantity) VALUES
-(9, 1, 1),	-- 9번 플레이어 검
-(10, 2, 5),	-- 10번 플레이어 방패
-(13, 3, 2)	-- 13번 플레이어 물약
+(2, 1, 1),	-- 2번 플레이어 검
+(3, 2, 5),	-- 3번 플레이어 방패
+(4, 3, 2)	-- 4번 플레이어 물약
 
 -- 새로운 아이템 추가
 INSERT INTO items(NAME, DESCRIPTION, VALUE) VALUES
 ('용검', '용 기본 무기', 20)
 -- 특정 플레이어의 인벤토리에 새 아이템 추가
-INSERT INTO inventories(player_id, item_id, quantity) VALUES (9, 4, 2)
+INSERT INTO inventories(player_id, item_id, quantity) VALUES (5, 4, 2)
 -- 가장 가치있는 아이템 찾기
 SELECT NAME, VALUE FROM items ORDER BY VALUE DESC LIMIT 1
 
 -- 퀘스트 테이블 생성
-CREATE TABLE quests(
-	quest_id INT AUTO_INCREMENT PRIMARY KEY,
-	title VARCHAR(100) NOT NULL,
-	DESCRIPTION TEXT,
-	reward_exp INT DEFAULT 0,
-	reward_item_id INT DEFAULT 0,
-	FOREIGN KEY (reward_item_id) REFERENCES items(item_id)
-)
+gametest
 
 -- 퀘스트 데이터 삽입
 INSERT INTO quests(title, DESCRIPTION, reward_exp, reward_item_id) VALUES
@@ -109,8 +102,8 @@ CREATE TABLE player_quests(
 )
 
 INSERT INTO player_quests(player_id, quest_id) VALUES
-(9, 1),
-(11, 2)
+(2, 1),
+(3, 2)
 
 -- 진행중인 퀘스트 조회
 SELECT p.username, q.title, pq.STATUS
