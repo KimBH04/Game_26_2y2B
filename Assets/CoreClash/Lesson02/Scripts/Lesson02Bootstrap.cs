@@ -7,6 +7,7 @@ namespace CoreClash.Lesson02
     public class Lesson02Bootstrap : MonoBehaviour
     {
         [SerializeField] private NetworkObject spawnerPrefab;
+        [SerializeField] private NetworkObject matchPrefab;
         private NetworkRunner readyRunner;
         private float spawnAfter;
         private bool spawned;
@@ -38,6 +39,7 @@ namespace CoreClash.Lesson02
             }
 
             runner.Spawn(spawnerPrefab, Vector3.zero, Quaternion.identity);
+            runner.Spawn(matchPrefab, Vector3.zero, Quaternion.identity);
             spawned = true;
         }
     }

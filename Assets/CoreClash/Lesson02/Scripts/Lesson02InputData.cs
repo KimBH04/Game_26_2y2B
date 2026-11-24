@@ -7,6 +7,8 @@ namespace CoreClash.Lesson02
     {
         // TODO 1: 공격 버튼을 정의하세요.
         Attack,
+        Fire,
+        Reload,
     }
 
     public struct Lesson02InputData : INetworkInput
